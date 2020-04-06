@@ -19,25 +19,21 @@ import common
 import re
 
 def FullOTA_InstallEnd(info):
-  input_zip = info.input_zip
-  OTA_InstallEnd(info, input_zip)
+  OTA_InstallEnd(info, info.input_zip)
   return
 
 def IncrementalOTA_InstallEnd(info):
-  input_zip = info.target_zip
-  OTA_InstallEnd(info, input_zip)
+  OTA_InstallEnd(info, info.target_zip)
   return
 
 def FullOTA_Assertions(info):
-  input_zip = info.input_zip
-  AddModemAssertion(info, input_zip)
-  AddVendorAssertion(info, input_zip)
+  AddModemAssertion(info, info.input_zip)
+  AddVendorAssertion(info, info.input_zip)
   return
 
 def IncrementalOTA_Assertions(info):
-  input_zip = info.target_zip
-  AddModemAssertion(info, input_zip)
-  AddVendorAssertion(info, input_zip)
+  AddModemAssertion(info, info.target_zip)
+  AddVendorAssertion(info, info.target_zip)
   return
 
 def AddImage(info, input_zip, basename, dest):
@@ -56,7 +52,7 @@ def OTA_InstallEnd(info, input_zip):
   return
 
 def AddModemAssertion(info, input_zip):
-  android_info = info.input_zip.read("OTA/android-info.txt")
+  android_info = input_zip.read("OTA/android-info.txt")
   m = re.search(r'require\s+version-modem\s*=\s*(.+)', android_info)
   miui_version = re.search(r'require\s+version-miui\s*=\s*(.+)', android_info)
   if m and miui_version:
@@ -69,7 +65,7 @@ def AddModemAssertion(info, input_zip):
   return
 
 def AddVendorAssertion(info, input_zip):
-  android_info = info.input_zip.read("OTA/android-info.txt")
+  android_info = input_zip.read("OTA/android-info.txt")
   v = re.search(r'require\s+version-vendor\s*=\s*(.+)', android_info)
   miui_version = re.search(r'require\s+version-miui\s*=\s*(.+)', android_info)
   if v and miui_version:
